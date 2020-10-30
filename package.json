@@ -1,0 +1,17 @@
+{
+  "name": "discord-bot-russian-kid",
+  "version": "1.0.0",
+  "description": "Best discord bot cyka",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.6"
+  }
+}
