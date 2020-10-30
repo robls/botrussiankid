@@ -16,7 +16,7 @@ client.on("message", async message => {
             message
                 .channel
                     .send("https://tenor.com/view/kid-meme-dancing-37-nation-gif-5514765");
-        }, 10 * 10000);
+        }, 10 * 100000);
     }
 })
 
