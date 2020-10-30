@@ -11,12 +11,6 @@ client.on("ready", () => {
 client.on("error", console.error);
 
 client.on("message", async message => {
-    if(message.content === "!russiankid"){
-        setInterval( interval => {
-            message
-                .channel
-                    .send("https://tenor.com/view/kid-meme-dancing-37-nation-gif-5514765");
-        }, 10 * 100000);
     }
 })
 
