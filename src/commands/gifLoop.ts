@@ -13,6 +13,7 @@ export class GifLoop {
             this.channels.push(message.channel.id);
             message.channel.send("CYKA BLYAT // >russiankid caso se arrependa");  
             this.russianKidLoop(message);
+            return;
         }else {
             let channelIndex = this.channels.findIndex(channelId => channelId == message.channel.id);
             if (channelIndex >= 0){

@@ -1,18 +1,19 @@
 import { Collection, GuildMember, Message } from "discord.js";
 import { GifLoop } from "./commands/gifLoop";
-import { Vandao } from "./commands/vandao";
 import { AudioPlayer } from './commands/audioPlayer';
+import { MemberHelper } from './helper/member.helper';
 import { PREFIX } from "./config";
 
 export class RussianKid {
     private gifLoop: GifLoop;
-    private vandao: Vandao;
     private audioPlayer: AudioPlayer;
+    private memberHelper: MemberHelper;
+
 
     constructor(){
         this.gifLoop = new GifLoop();
-        this.vandao = new Vandao();
         this.audioPlayer = new AudioPlayer();
+        this.memberHelper = new MemberHelper();
     } 
 
     private vtnc = [
@@ -21,22 +22,25 @@ export class RussianKid {
     ]
 
     public async run(message: Message): Promise<void> {
-        const args: Array<string> = message.content.split(' ');
+        if(message.author.bot) return undefined;
+
+        if(!message.content.startsWith(PREFIX)) return undefined;
+        
         if(message.content.startsWith(`${PREFIX}russiankid`)){
             this.gifLoop.run(message);
         }else if(message.content.startsWith(`${PREFIX}vandao`)){
-            this.vandao.run(message);
+            message.channel.send("Vandão sem skim dá mais dano", {
+                tts: true
+            });
+            return;
         }else if(message.content.startsWith(`${PREFIX}play`) || message.content.startsWith(`{PREFIX}stop`)){
             this.audioPlayer.play(message);
         }else if(message.content.startsWith(`${PREFIX}iskawa`)){
             let id = "293901352977956866";
-            let members: Collection<string, GuildMember>;
-
-            await message.guild.members.fetch({ user: [id], withPresences: true }).then( result => members = result);
-
-            let member: GuildMember = members.find(channelMember => channelMember.id === id);
+            let member:GuildMember =  await this.memberHelper.findMemberById(id, message.guild); 
 
             let index = Math.floor(Math.random() * this.vtnc.length);
+
             if(!member)
                 message.channel.send("Parece que o Iskawa não está no servidor ! Certifique-se que ele esteja presente.");
 
