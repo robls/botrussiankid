@@ -1,27 +1,26 @@
 import { Collection, GuildMember, Message } from "discord.js";
 import { GifLoop } from "./commands/gifLoop";
 import { AudioPlayer } from './commands/audioPlayer';
-import { MemberHelper } from './helper/member.helper';
+import { findMemberById } from './helper/member.helper';
 import { PREFIX } from "./config";
 
 export class RussianKid {
     private gifLoop: GifLoop;
     private audioPlayer: AudioPlayer;
-    private memberHelper: MemberHelper;
-
 
     constructor(){
         this.gifLoop = new GifLoop();
         this.audioPlayer = new AudioPlayer();
-        this.memberHelper = new MemberHelper();
     } 
 
-    private vtnc = [
-        'пошёл на хуй ✋',
-        'VTNC 😎'
-    ]
+
 
     public async run(message: Message): Promise<void> {
+        let vtnc = [
+            'пошёл на хуй ✋',
+            'VTNC 😎'
+        ];
+
         if(message.author.bot) return undefined;
 
         if(!message.content.startsWith(PREFIX)) return undefined;
@@ -37,14 +36,14 @@ export class RussianKid {
             this.audioPlayer.play(message);
         }else if(message.content.startsWith(`${PREFIX}iskawa`)){
             let id = "293901352977956866";
-            let member:GuildMember =  await this.memberHelper.findMemberById(id, message.guild); 
+            let member:GuildMember =  await findMemberById(id, message.guild); 
 
-            let index = Math.floor(Math.random() * this.vtnc.length);
+            let index = Math.floor(Math.random() * vtnc.length);
 
             if(!member)
                 message.channel.send("Parece que o Iskawa não está no servidor ! Certifique-se que ele esteja presente.");
 
-            message.channel.send(`${this.vtnc[index]} <@${member.id}>`);
+            message.channel.send(`${vtnc[index]} <@${member.id}>`);
         }
     }    
 }
