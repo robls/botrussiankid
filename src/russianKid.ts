@@ -1,49 +1,42 @@
-import { Collection, GuildMember, Message } from "discord.js";
-import { GifLoop } from "./commands/gifLoop";
-import { AudioPlayer } from './commands/audioPlayer';
+import { GuildMember, Message } from "discord.js";
 import { findMemberById } from './helper/member.helper';
 import { PREFIX } from "./config";
 
-export class RussianKid {
-    private gifLoop: GifLoop;
-    private audioPlayer: AudioPlayer;
+export async function run(message: Message): Promise<void>{
+    let vtnc = [
+        'пошёл на хуй ✋',
+        'VTNC 😎'
+    ];
 
-    constructor(){
-        this.gifLoop = new GifLoop();
-        this.audioPlayer = new AudioPlayer();
-    } 
+    if(message.author.bot) return;
 
+    if(!message.content.startsWith(PREFIX)) return;
+    
+    if(message.content.startsWith(`${PREFIX}russiankid`)){
+        //.gifLoop.run(message);
+    }else if(message.content.startsWith(`${PREFIX}vandao`)){
+        message.channel.send("Vandão sem skim dá mais dano", {
+            tts: true
+        });
+        return;
+    }else if(message.content.startsWith(`${PREFIX}iskawa`)){
+        let index = Math.floor(Math.random() * vtnc.length);
+        let id = "293901352977956866";
+        let member:GuildMember = await findMemberById(id, message.guild); 
+        let msg: string;
 
-
-    public async run(message: Message): Promise<void> {
-        let vtnc = [
-            'пошёл на хуй ✋',
-            'VTNC 😎'
-        ];
-
-        if(message.author.bot) return undefined;
-
-        if(!message.content.startsWith(PREFIX)) return undefined;
-        
-        if(message.content.startsWith(`${PREFIX}russiankid`)){
-            this.gifLoop.run(message);
-        }else if(message.content.startsWith(`${PREFIX}vandao`)){
-            message.channel.send("Vandão sem skim dá mais dano", {
-                tts: true
-            });
-            return;
-        }else if(message.content.startsWith(`${PREFIX}play`) || message.content.startsWith(`{PREFIX}stop`)){
-            this.audioPlayer.play(message);
-        }else if(message.content.startsWith(`${PREFIX}iskawa`)){
-            let id = "293901352977956866";
-            let member:GuildMember =  await findMemberById(id, message.guild); 
-
-            let index = Math.floor(Math.random() * vtnc.length);
-
-            if(!member)
-                message.channel.send("Parece que o Iskawa não está no servidor ! Certifique-se que ele esteja presente.");
-
-            message.channel.send(`${vtnc[index]} <@${member.id}>`);
+        console.log(member.user.username);
+        if(!member){
+            msg = "Cade o Iskawa porra ??"; 
+        }else{
+            msg = `${vtnc[index]} <@${member.id}>`;
         }
-    }    
-}
+        await message.channel.send(msg);
+
+        return undefined;
+        
+    }else if(message.content.startsWith(">")){
+        message.channel.send("Comando não reconhecido. Envie >comandos para a lista completa de comandos.");
+        return;
+    }
+}   

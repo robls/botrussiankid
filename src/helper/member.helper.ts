@@ -1,12 +1,13 @@
-import { Collection, Guild, GuildMember } from "discord.js";
+import { Guild, GuildMember } from "discord.js";
 
 export async function findMemberById(id: string, guild: Guild): Promise<GuildMember> {
     let member: GuildMember;
-    let members: Collection<string, GuildMember>;
+    
+    try{
+        member = await guild.members.fetch(id);
+        return member;
+    }catch(error: any){
+        console.log(error);
+    }
 
-    await guild.members.fetch({ user: [id], withPresences: true }).then( result => members = result);
-
-    member = members.find(channelMember => channelMember.id === id);
-
-    return member;
 }
