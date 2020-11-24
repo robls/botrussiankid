@@ -1,5 +1,4 @@
 import { Message, VoiceChannel, VoiceConnection } from 'discord.js';
-import { connect } from 'http2';
 const ytdl = require('ytdl-core');
 
 

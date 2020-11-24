@@ -1,5 +1,5 @@
 import { Collection, GuildChannel, GuildMember, Invite, MessageEmbed, TextChannel } from "discord.js";
-import { findMemberById } from '../helper/member.helper';
+import { findMemberById } from '../shared/helper/member.helper';
 import { colors } from '../shared/colors';
 
 export async function onInvite(inviteCreated: Invite): Promise<void> {

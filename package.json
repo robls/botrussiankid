@@ -18,6 +18,9 @@
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5",
     "ytdl-core": "^4.0.3"
   },
   "devDependencies": {
