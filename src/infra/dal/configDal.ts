@@ -10,6 +10,17 @@ export class ConfigDal implements IConfigDal {
         });
     }
 
+    public async delete(configId: number): Promise<void>{
+        let configToBeDeleted = await ConfigRepository.findOne({
+            where: {
+                id: configId
+            }
+        })
+        console.log(configId, configToBeDeleted);
+        if(configToBeDeleted)
+            configToBeDeleted.destroy();
+    }
+
     public update(userId: string, config: string) {
     }
 
@@ -19,16 +30,17 @@ export class ConfigDal implements IConfigDal {
                 user_id: userId
             }
         }); 
-
+        console.log(queryResult);
         if(queryResult){
             let config: Config = new Config();
             let queryData = queryResult.get();
 
+            config.id = queryData.id;
             config.user_id = queryData.user_id;
             config.user_config = queryData.user_config;
 
             return config;
-        }else {
+        } else {
             return null;
         }
     }
