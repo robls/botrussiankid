@@ -3,7 +3,7 @@ import database from '../../database';
 
 
 const ConfigRepository = database.connection.define('config', {
-    user_id: DataTypes.INTEGER,
+    user_id: DataTypes.STRING,
     user_config: DataTypes.STRING,
 });
 

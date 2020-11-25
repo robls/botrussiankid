@@ -3,17 +3,17 @@ import Config  from "../models/Config";
 import ConfigRepository from '../../database/models/config.model';
 
 export class ConfigDal implements IConfigDal {
-    public async save(userId: number, config: string) {
+    public async save(userId: string, config: string) {
         let newConfig = await ConfigRepository.create({
             user_id: userId,
             user_config: config
         });
     }
 
-    public update(userId: number, config: string) {
+    public update(userId: string, config: string) {
     }
 
-    public async getByUserId(userId: number): Promise<Config> {
+    public async getByUserId(userId: string): Promise<Config> {
         let queryResult = await ConfigRepository.findOne({
             where: {
                 user_id: userId

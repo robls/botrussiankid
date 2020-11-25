@@ -1,14 +1,12 @@
 import { Message } from "discord.js";
 import { PREFIX } from "./shared/config";
 import { iskawa } from "./commands/iskawa";
-import { ConfigBll } from './infra/bll/configBll';
 import { x5 } from './entities/x5';
-import Config from "./infra/models/Config";
-import { INTEGER } from "sequelize/types";
+import { ConfigController } from './infra/controller/configController';
 
 export async function run(message: Message): Promise<void>{
 
-    let configBll: ConfigBll = new ConfigBll();
+    const configController: ConfigController = new ConfigController();
 
     if(message.author.bot) return;
 
@@ -29,17 +27,10 @@ export async function run(message: Message): Promise<void>{
         message.channel.send(`Os capitães devem enviar o comando ${PREFIX}time`);
         let x5: x5;
     }else if(message.content.startsWith(`${PREFIX}config`)){
-        let test = await configBll.getByUserId("1243");
-        console.log(test);
-        if(!test){
-            message.channel.send('Não foi possível encontrar sua config.');
-            return;
-        }
-
-        message.channel.send(test.user_config);
+        await configController.run(message);
         return;
     }else if(message.content.startsWith(PREFIX)){
-        message.channel.send("Comando não reconhecido. Envie >comandos para a lista completa de comandos.");
+        message.channel.send(`Comando não reconhecido. Envie ${PREFIX}comandos para a lista completa de comandos.`);
         return;
     }
 }   

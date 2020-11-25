@@ -8,6 +8,7 @@ import { onInvite } from './events/onInvite';
 const client: Client = new Client();
 const BOT_SECRET = process.env.BOT_SECRET;
 
+
 (async () => {
     let sync = await database.connection.sync();
 })();
