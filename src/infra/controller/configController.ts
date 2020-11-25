@@ -1,5 +1,6 @@
 import { Emoji, GuildMember, Message, MessageEmbed, MessageReaction, ReactionEmoji } from "discord.js";
 import { config } from "dotenv/types";
+import { send } from "process";
 import { ConfigBll } from "../bll/configBll";
 
 export class ConfigController {
@@ -23,17 +24,19 @@ export class ConfigController {
 
         if(userConfig){
             returnMsg
-                .addField('🇷🇺 SUA CONFIG 🇷🇺', `**${userConfig.user_config}**`)
-                .addField('Lista de comandos', '-')
-                .addField('👍', 'Atualizar sua config')
-                .addField('👎', 'Remover sua config da base de dados');
+                .setTitle('🇷🇺 😎RUSSIAN KID CONFIG - BETA😎 🇷🇺')
+                .addField('Sua config: ', `**${userConfig.user_config}**`)
+                .addField('Comandos', 'Reaja a essa mensagem de acordo com o que deseja')
+                .addField('Atualizar config', '👍', true)
+                .addField('Deletar config', '👎', true);
         }else {
             returnMsg
-                .addField('🇷🇺 Ruski CONFIG 2.0 🇷🇺', 'Lista de comandos')
-                .addField('🧾', 'Salvar sua config');
+                .setTitle('🇷🇺 😎RUSSIAN KID CONFIG - BETA😎 🇷🇺')
+                .addField('Comandos', 'Reaja a essa mensagem de acordo com o que deseja')
+                .addField('Nova config', '🧾', true);
         }
 
-        returnMsg.addField('❌', 'Cancelar a operação');
+        returnMsg.addField('Cancelar', '❌', true);
 
         message.channel.send(returnMsg).then(async (sentEmbed) => {
             if(userConfig){
@@ -63,14 +66,16 @@ export class ConfigController {
                 let collectedReaction = collected.firstKey();
 
                 if(collectedReaction == '🧾'){
-                    await message.channel.send('🇷🇺 Agora envie sua config aqui no chat.');
+                    await message.channel.send('🇷🇺 Digite e envie sua config aqui no chat. 🇷🇺');
                     this.resolveConfigSet(message, senderId);
                 }else if(collectedReaction == '👎'){
-                    this.resolveConfigDelete(userConfig.id);
+                    await this.resolveConfigDelete(userConfig.id);
+                    message.channel.send('🇷🇺 Config deletada 🇷🇺');
                 }else if(collectedReaction == '👍'){
-    
+                    await message.channel.send('🇷🇺 Digite e envie sua config aqui no chat. 🇷🇺');
+                    await this.resolveConfigUpdate(message, senderId);
                 }else if(collectedReaction == '❌'){
-                    await message.channel.send('🇷🇺 Config cancelada 🇷🇺');
+                    await message.channel.send('🇷🇺 vlw otario(a) 🇷🇺');
                     return undefined;
                 }
 
@@ -92,6 +97,23 @@ export class ConfigController {
                 await message.channel.send('Config foi salva com sucesso bro wow faz sol 😎😎');
             }catch(error) {
                 await message.channel.send('Houve um erro ao salvar sua config.');
+            }
+        });
+    }
+
+    private resolveConfigUpdate(message: Message, userId: string){
+        
+        let filter = (m: Message) => m.author.id === userId;
+        
+        message.channel.awaitMessages(filter, { max: 1, time: this.awaitTime, errors: ['time'] })
+        .then(async collected => {
+            let collectedAnswer: Message = collected.first();
+            let userConfig = collectedAnswer.content;
+            try{
+                await this.configBll.update(userId, userConfig);
+                await message.channel.send('Config atualizada com sucesso bro wow faz sol 😎😎');
+            }catch(error) {
+                await message.channel.send('Houve um erro ao atualizar sua config.');
             }
         });
     }

@@ -16,8 +16,8 @@ export class ConfigBll {
         return await this.configDal.delete(configId);
     }
 
-    public update(){
-        
+    public async update(userId: string, userConfig: string){
+        return await this.configDal.update(userId, userConfig);
     }
 
     public async getByUserId(userId: string){

@@ -1,8 +1,9 @@
-import { Message } from "discord.js";
-import { PREFIX } from "./shared/config";
+import { Message, MessageAttachment, MessageEmbed } from "discord.js";
+import { PREFIX, COMMANDS, RUSSIANKIDAVATARURL } from "./shared/config";
 import { iskawa } from "./commands/iskawa";
 import { x5 } from './entities/x5';
 import { ConfigController } from './infra/controller/configController';
+import { json } from "sequelize/types";
 
 export async function run(message: Message): Promise<void>{
 
@@ -29,6 +30,16 @@ export async function run(message: Message): Promise<void>{
     }else if(message.content.startsWith(`${PREFIX}config`)){
         await configController.run(message);
         return;
+    }else if(message.content.startsWith(`${PREFIX}comandos`)){
+        let embedReturn: MessageEmbed = new MessageEmbed()
+            .setTitle('Comandos RussianKid').setImage(RUSSIANKIDAVATARURL);
+
+        COMMANDS.forEach(command => {
+            embedReturn.addField(`🇷🇺 ${PREFIX}${command[0]}`, command[1])
+        })
+
+        message.channel.send(embedReturn);
+
     }else if(message.content.startsWith(PREFIX)){
         message.channel.send(`Comando não reconhecido. Envie ${PREFIX}comandos para a lista completa de comandos.`);
         return;

@@ -21,7 +21,17 @@ export class ConfigDal implements IConfigDal {
             configToBeDeleted.destroy();
     }
 
-    public update(userId: string, config: string) {
+    public async update(userId: string, config: string): Promise<void> {
+        let configToBeUpdated = await ConfigRepository.findOne({
+            where: {
+                user_id: userId
+            }
+        });
+
+        await configToBeUpdated.update({
+            user_id: userId,
+            user_config: config
+        });
     }
 
     public async getByUserId(userId: string): Promise<Config> {
